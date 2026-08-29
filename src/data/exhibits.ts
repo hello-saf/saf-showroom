@@ -131,7 +131,18 @@ const Y2 = 6.6 // 2F 작품
 const T1 = 2.1 // 1F 벽 글씨
 const T2 = 6.7 // 2F 벽 글씨
 
-const img = (n: string) => `/images/project-${n}.jpg`
+/**
+ * public 폴더의 파일 경로를 만듭니다.
+ *
+ * GitHub Pages 처럼 하위 경로(/저장소이름/)에서 서비스될 때도
+ * 주소가 어긋나지 않도록 BASE_URL 을 앞에 붙입니다.
+ * "/images/..." 처럼 직접 쓰면 배포 후 이미지가 404 가 됩니다.
+ *
+ *   asset('images/logo.png')  →  /saf-showroom/images/logo.png
+ */
+export const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
+
+const img = (n: string) => asset(`images/project-${n}.jpg`)
 
 export const exhibits: Exhibit[] = [
   /* ══════════════════════════════════════════════════════
@@ -341,7 +352,7 @@ export const exhibits: Exhibit[] = [
     title: 'SAF',
     // 흰 배경 + 검은 글자 로고 파일을 넣으면 흰 글씨로 벽에 붙습니다.
     // 파일 위치: public/images/logo.png
-    image: '/images/logo.png',
+    image: asset('images/logo.png'),
     mode: 'logo',
     floor: 1,
     position: [-1.5, 2.5, WALL.south.z],
