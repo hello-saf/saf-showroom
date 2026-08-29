@@ -76,7 +76,7 @@ export const CONFIG = {
     captionWeightFirst: 600, //   첫 줄 굵기
     captionWeight: 400, //        나머지 줄 굵기
     captionTracking: 0.016, //    자간 (m)
-    captionLineGap: 0.045, //     줄 간격 (m)
+    captionLineGap: 0.075, //     줄 간격 (m) — 키우면 줄 사이가 넓어집니다
     captionGap: 0.16, //          이미지와 캡션 사이 간격 (m)
     captionAlign: 'left' as const,
     captionColor: '#f2efe9',
@@ -107,8 +107,8 @@ export const CONFIG = {
     bodySize: 0.115, //       본문 글자 높이
     bodyWeight: 400,
     bodyTracking: 0.018,
-    bodyColor: 'rgba(242, 239, 233, 0.52)',
-    lineGap: 0.08, //         본문 줄 간격
+    bodyColor: 'rgba(242, 239, 233, 0.6)',
+    lineGap: 0.16, //         본문 줄 간격 (키우면 줄 사이가 넓어집니다)
     ruleWidth: 0.5, //        제목 위 짧은 선 길이
   },
 
