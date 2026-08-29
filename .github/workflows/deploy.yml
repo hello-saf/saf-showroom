@@ -1,0 +1,57 @@
+# GitHub Pages 자동 배포
+# main 브랜치에 push 할 때마다 빌드해서 배포합니다.
+# Actions 탭에서 진행 상황을 볼 수 있습니다.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Actions 탭에서 수동으로도 실행할 수 있습니다
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 배포가 겹치지 않도록 한 번에 하나만 실행합니다
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # GitHub Pages 는 사용자이름.github.io/저장소이름/ 에서 서비스되므로
+      # 저장소 이름을 base 경로로 넘겨야 이미지와 스크립트 주소가 맞습니다.
+      - name: Build
+        run: npm run build
+        env:
+          DEPLOY_BASE: /${{ github.event.repository.name }}/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
